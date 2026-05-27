@@ -19,14 +19,8 @@ package kubernetes
 import (
 	"time"
 
-	core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/kubernetes/scheme"
-	typedcore "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/tools/clientcmd/api"
 	"k8s.io/client-go/tools/record"
 )
 
@@ -37,27 +31,17 @@ const Component = "draino"
 // dependencies on glog.
 // https://godoc.org/k8s.io/client-go/tools/clientcmd#BuildConfigFromFlags
 func BuildConfigFromFlags(apiserver, kubecfg string) (*rest.Config, error) {
-	if kubecfg != "" || apiserver != "" {
-		return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
-			&clientcmd.ClientConfigLoadingRules{ExplicitPath: kubecfg},
-			&clientcmd.ConfigOverrides{ClusterInfo: api.Cluster{Server: apiserver}}).ClientConfig()
-	}
-	return rest.InClusterConfig()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewEventRecorder returns a new record.EventRecorder for the given client.
 func NewEventRecorder(c kubernetes.Interface) record.EventRecorder {
-	b := record.NewBroadcaster()
-	b.StartRecordingToSink(&typedcore.EventSinkImpl{Interface: typedcore.New(c.CoreV1().RESTClient()).Events("")})
-	return b.NewRecorder(scheme.Scheme, core.EventSource{Component: Component})
+	_ = "STUB: not implemented"
+	return *new(record.EventRecorder)
 }
 
 func RetryWithTimeout(f func() error, retryPeriod, timeout time.Duration) error {
-	return wait.PollImmediate(retryPeriod, timeout,
-		func() (bool, error) {
-			if err := f(); err != nil {
-				return false, nil
-			}
-			return true, nil
-		})
+	_ = "STUB: not implemented"
+	return nil
 }

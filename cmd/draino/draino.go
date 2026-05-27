@@ -24,8 +24,6 @@ import (
 	"time"
 
 	"contrib.go.opencensus.io/exporter/prometheus"
-	"github.com/julienschmidt/httprouter"
-	"github.com/oklog/run"
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/tag"
 	"go.uber.org/zap"
@@ -247,33 +245,17 @@ type runner interface {
 	Run(stop <-chan struct{})
 }
 
-func await(rs ...runner) error {
-	stop := make(chan struct{})
-	g := &run.Group{}
-	for i := range rs {
-		r := rs[i] // https://golang.org/doc/faq#closures_and_goroutines
-		g.Add(func() error { r.Run(stop); return nil }, func(err error) { close(stop) })
-	}
-	return g.Run()
-}
+func await(rs ...runner) error { _ = "STUB: not implemented"; return nil }
+
+// https://golang.org/doc/faq#closures_and_goroutines
 
 type httpRunner struct {
 	l string
 	h map[string]http.Handler
 }
 
-func (r *httpRunner) Run(stop <-chan struct{}) {
-	rt := httprouter.New()
-	for path, handler := range r.h {
-		rt.Handler("GET", path, handler)
-	}
+func (r *httpRunner) Run(stop <-chan struct{}) { _ = "STUB: not implemented"; return }
 
-	s := &http.Server{Addr: r.l, Handler: rt}
-	ctx, cancel := context.WithTimeout(context.Background(), 0*time.Second)
-	go func() {
-		<-stop
-		s.Shutdown(ctx) // nolint:errcheck
-	}()
-	s.ListenAndServe() // nolint:errcheck
-	cancel()
-}
+// nolint:errcheck
+
+// nolint:errcheck
